@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>이야기 페이지</title>
+<style>
+  html, body {
+    height: 100%;
+    margin: 0;
+    font-family: system-ui, -apple-system, Roboto, 'Noto Sans KR', sans-serif;
+    background: linear-gradient(120deg,#0f172a,#0b1220);
+    color: #fff;
+  }
+  .wrap {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    padding: 2rem;
+  }
+  .card {
+    background: none;
+    backdrop-filter: none;
+    padding: 0;
+    box-shadow: none;
+  }
+  audio { display: none; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="card" id="card">
+    <img src="./Dream Time.jpg" style="width:350px;" alt="첫 페이지 사진">
+    <p style="margin-top:1rem;">클릭하여 시작</p>
+  </div>
+
+  <audio id="bgm" loop preload="auto">
+    <source src="./bgm.mp3" type="audio/mpeg">
+  </audio>
+</div>
+
+<script>
+const audio = document.getElementById('bgm');
+const wrap = document.querySelector('.wrap');
+
+let currentPage = 0;
+
+// 페이지 문구
+const pages = [
+  "1. 이야기 시작",
+  '"정신차리세요~"',
+  '"드디어 일어나셨군요."',
+  '"저도 눈을 떠보니 이런 알 수 없는 곳에 있었어요."',
+  '"아, 제 이름은 일레이나에요."',
+  '"그리고 당신도 옆에서 쓰러져 있었어요."',
+  "7. 일곱 번째 페이지 문장",
+  "8. 여덟 번째 페이지 문장",
+  "9. 아홉 번째 페이지 문장",
+  "10. 마지막 페이지 문장"
+];
+
+// 페이지별 이미지
+const pageImages = {
+  0: "./Dream Time.jpg",
+  2: "./기본.jpg",
+  3: "./기본.jpg",
+  4: "./기본.jpg",
+  5: "./img5.jpg"
+};
+
+// 이미지 스타일
+const pageImageStyles = {
+  0: "width:350px; margin-top:10px;",  
+  1: "width:250px; margin-top:0px; transform:translateX(-240px);",
+  2: "width:250px; margin-top:0px; transform:translateX(-240px);",
+  3: "width:250px; margin-top:0px; transform:translateX(-240px);",
+  4: "width:250px; margin-top:0px; transform:translateX(-240px);",
+  5: "width:250px; margin-top:0px; transform:translateY(-240px);"
+};
+
+// 페이지별 문장 위치 스타일
+const pageTextStyles = {
+  0: "margin-top:1rem; position: relative; left: 0px;",     // 가운데
+  1: "margin-top:-50px; position: relative; left: 0px;", // 왼쪽
+  2: "margin-top:-150px; position: relative; left: 0px;",  // 오른쪽
+  3: "margin-top:-150px; position: relative; left: 100px;",
+  4: "margin-top:-150px; position: relative; left: 30px;",
+  5:"margin-top:-150px; position: relative; left: 0px;",
+  6: "margin-top:-150px; position: relative; left: 0px;",
+  7: "margin-top:-150px; position: relative; left: 0px;",
+};
+
+// 코드 입력 페이지
+const pageCodes = {
+  7: "1234"
+};
+
+// 페이지별 BGM
+const pageBGMs = {
+  0: "./노래.mp3",
+  3: "./bgm3.mp3"
+};
+
+// 페이지 표시 함수
+function showPage() {
+  const card = document.getElementById('card');
+
+  if(currentPage >= pages.length){
+    card.innerHTML = "마지막 페이지입니다.";
+    return;
+  }
+
+  // BGM 바꾸기
+  if(pageBGMs[currentPage]){
+    audio.pause();
+    audio.src = pageBGMs[currentPage];
+    audio.play().catch(()=>{});
+  }
+
+  // 코드 입력 페이지
+  if(pageCodes[currentPage]){
+    card.innerHTML = `
+      ${pageImages[currentPage] ? `<img src="${pageImages[currentPage]}" style="${pageImageStyles[currentPage]}">` : ''}
+      <p style="${pageTextStyles[currentPage] || 'margin-top:1rem;'}">${pages[currentPage]}</p>
+      <input type="text" id="codeInput" placeholder="코드를 입력하세요"><br>
+      <button id="submitBtn">확인</button>
+      <p id="msg" style="margin-top:0.5rem;opacity:0.8;"></p>
+    `;
+
+    document.getElementById('submitBtn').addEventListener('click', ()=> {
+      const entered = document.getElementById('codeInput').value.trim();
+      const msg = document.getElementById('msg');
+      if(entered === pageCodes[currentPage]){
+        currentPage++;
+        showPage();
+      } else {
+        msg.textContent = "코드가 틀렸습니다!";
+      }
+    });
+
+  } else {
+    // 코드 없는 페이지
+    card.innerHTML = `
+      ${pageImages[currentPage] ? `<img src="${pageImages[currentPage]}" style="${pageImageStyles[currentPage] || ''}">` : ''}
+      <p style="${pageTextStyles[currentPage] || 'margin-top:1rem;'}">${pages[currentPage]}</p>
+    `;
+  }
+}
+
+// 배경 클릭 이벤트
+wrap.addEventListener('click', ()=>{
+  if(pageCodes[currentPage]) return;
+
+  if(currentPage === 0){
+    audio.play().catch(()=>{});
+  }
+
+  currentPage++;
+  showPage();
+});
+</script>
+</body>
+</html>
+
