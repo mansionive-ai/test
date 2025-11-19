@@ -30,19 +30,15 @@
   audio { display: none; }
 
   /* ← 버튼 스타일 */
-  #backBtn {
-    position: fixed;
-    top: 265px;
-    left: 775px;
-    background: rgba(255,255,255,0.12);
-    color: #fff;
-    border: none;
-    padding: 6px 12px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 20px;
-    backdrop-filter: blur(6px);
-  }
+#backBtn {
+  position: fixed;
+  top: 5px;        /* 상단 끝으로 붙임 */
+  left: 5px;       /* 좌측 끝으로 붙임 */
+  padding: 4px 8px;
+  font-size: 18px;
+  z-index: 1000;
+}
+
 
   #continueBtn {
     margin-top: 1rem;
@@ -103,9 +99,9 @@ const pageImageStyles = {
   0: "width:350px; margin-top:10px;",
   1: "width:250px; margin-top:0px; transform:translateX(-240px);",
   2: "width:250px; margin-top:-100px;",
-  3: "width:250px; margin-top:0px;",
-  4: "width:250px; margin-top:0px;",
-  5: "width:250px; margin-top:0px; transform:translateY(-240px);"
+  3:  "width:250px; margin-top:-100px;",
+  4:  "width:250px; margin-top:-100px;",
+  5:  "width:250px; margin-top:-100px;",
 };
 
 // ------------------- 문장 스타일 -------------------
@@ -241,6 +237,7 @@ showPage();
 </script>
 </body>
 </html>
+
 
 
 
