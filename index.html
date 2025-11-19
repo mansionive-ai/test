@@ -76,22 +76,77 @@ const pages = [
   "클릭하여 시작<br>",
   '"정신차리세요~"',
   '"드디어 일어나셨군요."',
+'눈을 뜨자 처음보는 여자가 나를 뚫어져라 바라보고 있었다.',
+'"몸은 괜찮으신가요?"',
+'"네"',
+'나는 그녀의 질문에 대답을 하며 주변을 둘러보았다.',
+'끝없이 이어지는 노란색 벽과, 삐걱거리는 형광등 불빛만이 허공에 떠있다.',
+'눅눅하고 축축한 공기, 사방에 길고 길게 이어진 복도는 끝없이 늘어져 있다.',
+'주위는 완전히 고요했다. 공허하게 울리는 내 목소리는 마치 세상과 단절된 것처럼 느껴진다.',
   '"저도 눈을 떠보니 이런 알 수 없는 곳에 있었어요."',
   '"아, 제 이름은 일레이나에요."',
-  '"그리고 당신도 옆에서 쓰러져 있었어요."',
-  "7. 일곱 번째 페이지 문장",
-  "8. 여덟 번째 페이지 문장",
-  "9. 아홉 번째 페이지 문장",
-  "10. 마지막 페이지 문장"
+'',
+'',
+'',
+'',
+'',
+'',
+'',
+'',
+'',
+'',
+'',
+'',
+'',
+'',
+'',
+'',
+'',
+'',
+'',
+'',
+'',
+'',
+'',
+'',
+'',
+'',
+'',
+'',
+'',
+'',
+'',
+'',
+'',
+'',
+'',
+'',
+'',
+'',
+'',
+'',
+'',
+'',
+'',
+'',
+'',
+'',
+'',
+'',
+'',
+'',
+'',
+'',
+'',
+'',
+''
 ];
 
 // ------------------- 이미지 -------------------
 const pageImages = {
   0: "./Dream Time.jpg",
   2: "./기본.jpg",
-  3: "./기본.jpg",
-  4: "./기본.jpg",
-  5: "./img5.jpg"
+  4: "./기본.jpg" 
 };
 
 // ------------------- 이미지 스타일 -------------------
@@ -107,13 +162,17 @@ const pageImageStyles = {
 // ------------------- 문장 스타일 -------------------
 const pageTextStyles = {
   0: "margin-top:1rem;",
-  1: "margin-top:0px;",
+  1: "margin-top:50px;",
   2: "margin-top:50px;",
   3: "margin-top:50px;",
   4: "margin-top:50px;",
-  5: "margin-top:-150px;",
-  6: "margin-top:-150px;",
-  7: "margin-top:-150px;"
+  5: "margin-top:50px;",
+  6: "margin-top:50px;",
+  7: "margin-top:50px;",
+8: "margin-top:50px;",
+9: "margin-top:50px;",
+10: "margin-top:50px;",
+11: "margin-top:50px;"
 };
 
 // ------------------- 코드 입력 페이지 -------------------
@@ -123,31 +182,37 @@ const pageCodes = {
 
 // ------------------- BGM -------------------
 const pageBGMs = {
-  0: "./노래.mp3",
-  3: "./bgm3.mp3"
+  0: "./노래.mp3"
+  
 };
 
-// ------------------- 페이지 표시 함수 -------------------
 function showPage() {
   const card = document.getElementById('card');
+  const backBtn = document.getElementById("backBtn");
+  const saved = localStorage.getItem("currentPage");
+
+  // ← 버튼 표시 여부
+  if (currentPage === 0) {
+    backBtn.style.display = "none";
+  } else {
+    backBtn.style.display = "block";
+  }
 
   // 첫 페이지 + 이어하기 버튼 표시
   if (currentPage === 0) {
-    const saved = localStorage.getItem("currentPage");
-
     card.innerHTML = `
       <img src="./Dream Time.jpg" style="width:350px; margin-top:10px;">
       <p style="margin-top:1rem;">클릭하여 시작<br></p>
       ${saved && saved > 0 ? `<button id="continueBtn">이어하기</button>` : ""}
     `;
 
-if (saved && saved > 0) {
-  document.getElementById("continueBtn").addEventListener("click", (e) => {
-    e.stopPropagation(); // ← 이거 추가
-    currentPage = parseInt(saved);
-    showPage();
-  });
-}
+    if (saved && saved > 0) {
+      document.getElementById("continueBtn").addEventListener("click", (e) => {
+        e.stopPropagation(); // wrap 클릭 이벤트 방지
+        currentPage = parseInt(saved);
+        showPage();
+      });
+    }
 
     return;
   }
@@ -156,6 +221,8 @@ if (saved && saved > 0) {
     card.innerHTML = "마지막 페이지입니다.";
     return;
   }
+
+
 
   // BGM 변경
   if (pageBGMs[currentPage]) {
@@ -169,22 +236,24 @@ if (saved && saved > 0) {
     card.innerHTML = `
       ${pageImages[currentPage] ? `<img src="${pageImages[currentPage]}" style="${pageImageStyles[currentPage]}">` : ""}
       <p style="${pageTextStyles[currentPage]}">${pages[currentPage]}</p>
-      <input type="text" id="codeInput" placeholder="코드를 입력하세요"><br>
+      <input type="text" id="codeInput" placeholder="코드입력"><br>
       <button id="submitBtn">확인</button>
       <p id="msg" style="margin-top:0.5rem;opacity:0.8;"></p>
     `;
 
-    document.getElementById('submitBtn').addEventListener('click', () => {
-      const entered = document.getElementById('codeInput').value.trim();
-      const msg = document.getElementById('msg');
-      if (entered === pageCodes[currentPage]) {
-        currentPage++;
-        localStorage.setItem("currentPage", currentPage);
-        showPage();
-      } else {
-        msg.textContent = "코드가 틀렸습니다!";
-      }
-    });
+document.getElementById('submitBtn').addEventListener('click', (e) => {
+  e.stopPropagation();  // ← wrap 클릭 이벤트 방지
+  const entered = document.getElementById('codeInput').value.trim();
+  const msg = document.getElementById('msg');
+  if (entered === pageCodes[currentPage]) {
+    currentPage++;
+    localStorage.setItem("currentPage", currentPage);
+    showPage();
+  } else {
+    msg.textContent = "코드가 틀렸습니다!";
+  }
+});
+
 
   } else {
     // 일반 페이지
@@ -237,7 +306,6 @@ showPage();
 </script>
 </body>
 </html>
-
 
 
 
