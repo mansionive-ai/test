@@ -1,3 +1,6 @@
+
+
+
 <!doctype html>
 <html lang="ko">
 <head>
@@ -156,6 +159,7 @@ const wrap = document.querySelector('.wrap');
 let currentPage = 0;
 let pageHistory = [];  // 페이지 히스토리 추적
 let audioUnlocked = false;  // 오디오 잠금 해제 여부
+let playerName = ""; //플레이어 이름
 
 const pages = {
   0: "클릭하여 시작<br>",
@@ -189,7 +193,7 @@ const pages = {
   28: '끝없이 이어지는 같은 풍경, 마치 미로처럼 느껴진다.',
   29: '2분 정도 지났을까? 두 사람은 아무 말 없이 발을 맞춰 걸어나갔다.',
   30: '"끝이 없네요."',
-  31: '"그러게요."<br><br>약간 어색한 분위기에서 일레이나 씨가 나에게 고개를 돌리며 말했다.',
+  31: '"그러게요."',
   32: '"어?"',
   33: '일레이나 씨는 뭔가를 보고 멈추었다.',
   34: '"이게 뭘까요?"',
@@ -210,7 +214,7 @@ const pages = {
   49: '"왜 그러세요?"',
   50: '"576은 혹시 모르니 기억해 놓죠."',
   51: '"그게 좋겠어요."',
-  52: 'chapter 1<br><br>『백룸』',
+  52: '1st floor<br><br>『Backrooms』',
   53: '걸어도 걸어도 끝없이 이어지는 같은 풍경',
   54: '일레이나 씨와 나는 그저 계속 걸을 뿐이었다.',
   55: '대체 누가 어떤 목적으로 나와 일레이나 씨를 이곳에 데려온 건지, 기억은 왜 없는 건지.',
@@ -280,7 +284,7 @@ const pages = {
 119:'뒤에서 들려오는 너무나 소름 끼치는 소리',
 120:'"도망... 도망쳐요..!"',
 121:'뒤를 돌아본 그곳에는 괴상한 소리를 내며 돌진해 오는 무언가가 있었다.',
-122:'나는 즉시 일레이나 씨의 손을 붙잡고 소리쳤다.<br><br>달려요!!!',
+122:'나는 즉시 일레이나 씨의 손을 붙잡고 소리쳤다.<br><br>"달려요!!!"',
 123:'쿵ㅡ쿵ㅡ쿵ㅡㅡ! 꺽..꺽..꺽..ㅡㅡㅡ',
 124:'요동치는 무언가의 발소리와 울음소리는 전신에 소름이 끼쳐왔다.',
 125:'나는 이 괴물에게 붙잡히면 죽는다는 걸 본능적으로 깨닫고 죽기 살기로 달렸다.',
@@ -316,12 +320,90 @@ const pages = {
 155:'"이름을 어떻게 부르면 좋을까요?"',
 156:'"계속 저기요라고 부르는 것도 좀 그러잖아요."',
 157:'"글쎄요..."<br><br>이름이라... 전혀 기억이 나지 않아',
-158:'내 이름은...' ,
-159: "씨.. 좋은 이름이네요!",
-  10000: "책장을 조사했다. 먼지가 가득하다.",
-  10003: "가방 안에는 오래된 지도가 있다.",
-  10005: "액자 뒤에 숨겨진 메모를 발견했다.",
-  10007: "금고는 비밀번호가 필요하다."
+158:'내 이름은...' , // 이름을 입력하는 칸이 나오고 확인을 누르면 앞으로 코드에서 name 부분이 설정한 이름이 나온다.
+159: "[name]씨.. 앞으론 이걸로 부를게요.",
+160: '"좋아요."<br><br>우리는 계속해서 나아갔다.',
+161: '괴생명체가 쫓아왔던 방향과는 정반대의 길로.',
+162: '어? 저건 설마...?',
+163: '가던 도중 벽에 웬 사다리가 놓여 있다.',
+164: '사다리 위에는 사람이 지나갈 만큼의 네모난 구멍이 뚫려 있다.',
+165: '"출구일까요?"',
+166: '"가봅시다."',
+167: '내가 먼저 사다리를 타고 올라갔다.',
+168: '구멍의 뒤에는 지금까지와 별다를 것 없는 공간이 펼쳐져 있었다.',
+169: '"조심하세요."',
+170: '"네..."',
+171: '"여기도 마찬가지네요. 풍경이."',
+172: '"대체 얼마나 넓은 걸까요?"',
+173: '"빠르게 움직이는 수밖에요."',
+174: '나와 일레이나 씨는 다시 한 번 각오를 다졌다.',
+175: '그 이후로는 끝없이 걸을 뿐이었다.',
+176: '"슬슬 쉬고 싶어요."',
+177: '"[name]씨는 괜찮으세요?"',
+178: '"저도 지쳤어요. 쉬었다 가는 게 좋겠습니다."',
+179: '"트인 곳은 위험하니 좁은 곳으로 들어갑시다."',
+180: '우리는 근처의 좁은 장소로 이동했다.',
+181: '"일레이나 씨도 이름을 제외한 것들이 기억나지 않으시죠?"',
+182: '"...... 네."',
+183: '안색이 좀 안 좋아 보이는데...<br><br>"지금 잘 쉬어 두세요. 언제 또 괴생명체가 나올지 모르니까요."',
+184: '"저기..."',
+185: '일레이나 씨가 뭔가 말할 게 있어 보인다.',
+186: '"네, 말씀하세요."',
+187: '"그... 화..."',
+188: '"화장실이..."',
+189: '"아... 네..! 잠시만요.."<br><br>이 상황에서 일레이나 씨만 따로 있는 건 위험한데..',
+190: '"많이 급하신가요?"',
+191: '"네, 이제 한계예요. 죄송해요."',
+192: '방법이 있을까? 이 골목길을 나가면 넓게 펼쳐진 중앙 복도가 있다.',
+193: '어떡하지?',
+194: '"저도 그렇게 생각해요."',
+195: '"...뒤, 봐주세요."',
+196: '나는 뒤를 돌아보았고, 얼마 지나지 않아 미세한 물줄기 소리가 조용히 흘러나왔다.',
+197: '"가요..."',
+198: '일레이나 씨는 급하게 앞장서서 골목길을 빠져나왔다.',
+199: '일레이나 씨는 다소 부끄러워하는 눈치였다.',
+200: '하지만 상황이 상황인지라 어쩔 수 없다. 앞으로는 이보다 더한 상황이 생길 수도 있다.',
+201: '우리는 길을 따라 걷고 또 걸었다.',
+202: '"어라? 막다른 길이네요."',
+203: '"그렇네요. 돌아가야 할까요?"',
+204: '"여길 봐요!"',
+205: '"이건..."<br><br>그곳엔 숫자를 입력할 수 있는 숫자패드와 숫자 문제가 있었다.',
+206: '"문장도 적혀 있네요."',
+207: '"지금까지 나온 숫자를 전부 더한 값을 입력해야 되는가 봐요."',
+208: '"그래 보이네요."',
+209: '"576..3546..."',
+210: '"!!! 뒤에! 왔어요!!!"',
+211: '그녀의 외침에 순간적으로 뒤를 보자, 수백 미터 뒤에서 괴생명체가 비명을 지르며 돌진해 오고 있었다.',
+212: '"여기는 도망칠 곳도 없어요! 어떡하죠?"',
+213: '"문제를 풀게요! 아마 정답을 이 패드에 입력하면...!"',
+214: '"후..."<br><br>집중하자, 이판사판이다.',
+215: '576..3546...',
+216: '세 번째 문제',
+217: '네번째 문제와 모두 더한 값.',
+218: '제발... 이 입력에 모든 것을 걸겠다.',
+219: '숫자를 입력하자, 벽에 문이 생겼다.',
+10000: '일레이나 씨는 급하게 골목길 밖으로 나갔다.',
+10001: '아무일도 없어야 할 텐데.',
+10002: '할 수 있는 건 무사히 돌아오기를 바라는 것뿐이다.',
+10003: '탁 트인 복도를 내다볼 수도 없는 노릇이고 말이다.',
+10004: '5분 정도 지났을까? 일레이나 씨가 달려오는 소리가 들렸다.',
+10005: '"일레이나 씨, 무사하셨"',
+10006: '"도망쳐요...!!!"',
+10007: '일레이나 씨의 백 미터쯤 뒤에는 그 괴생명체가 돌진하고 있었다.',
+10008: '나는 곧바로 일레이나 씨의 손을 낚아채 같이 달리기 시작했다.',
+10009: '"하아... 하아... 하아..."<br><br>전속력으로 달렸지만, 괴생명체의 발소리는 멈추지 않았다.',
+10010: '괴생명체는 아까보다 더 난폭한 소리를 냈다.',
+10011: '"하아... 하아... 어떡해요?"',
+10012: '이럴 수가, 막다른 길이라고? 유인당한 건가?',
+10013: '"여길 봐요!"',
+10014: '이건 숫자 패드와...',
+10015: '숫자 문제이다!',
+10016: '괴생명체는 지금 이 순간에도 무서운 속도로 달려오고 있다.',
+10017: '어차피 지금 숨을 곳도, 갈 곳도 없다.',
+10018: { text: '"후..."<br><br>나는 심호흡하며 문제에 집중했다.', goto: 215 } 
+
+
+
 };
 
 
@@ -396,7 +478,34 @@ const pageImages = {
 154: "./일레이나/일어남.jpg",
 155: "./일레이나/일어남.jpg",
 156: "./일레이나/일어남.jpg",
-159: "./일레이나/일어남.jpg"
+159: "./일레이나/일어남.jpg",
+165: "./일레이나/일어남.jpg",
+170: "./일레이나/일어남.jpg",
+171: "./일레이나/실망.jpg",
+172: "./일레이나/긴장.jpg",
+176: "./일레이나/부끄.jpg",
+182: "./일레이나/부끄.jpg",
+184: "./일레이나/부끄.jpg",
+187: "./일레이나/부끄.jpg",
+188: "./일레이나/부끄2.jpg",
+191: "./일레이나/부끄2.jpg",
+194: "./일레이나/부끄.jpg",
+195: "./일레이나/부끄2.jpg",
+197: "./일레이나/부끄.jpg",
+202: "./일레이나/실망.jpg",
+204: "./일레이나/감탄.jpg",
+205: "./문제/4.jpg",
+207: "./일레이나/일어남.jpg",
+210: "./일레이나/놀람2.jpg",
+212: "./일레이나/긴장.jpg",
+216: "./문제/3.jpg",
+217: "./문제/4.jpg",
+218: "./문제/4.jpg",
+10006: "./일레이나/도망.jpg",
+10011: "./일레이나/달림.jpg",
+10013: "./일레이나/달림.jpg",
+10015:"./문제/4.jpg"
+
 
 };
 
@@ -474,7 +583,33 @@ const pageImageStyles = {
 154: "width:250px; margin-top:-100px;",
 155: "width:250px; margin-top:-100px;",
 156: "width:250px; margin-top:-100px;",
-159: "width:250px; margin-top:-100px;"
+159: "width:250px; margin-top:-100px;",
+165: "width:250px; margin-top:-100px;",
+170: "width:250px; margin-top:-100px;",
+171: "width:250px; margin-top:-100px;",
+172: "width:250px; margin-top:-100px;",
+176: "width:250px; margin-top:-100px;",
+182: "width:250px; margin-top:-100px;",
+184: "width:250px; margin-top:-100px;",
+187: "width:250px; margin-top:-100px;",
+188: "width:250px; margin-top:-100px;",
+191: "width:250px; margin-top:-100px;",
+194: "width:250px; margin-top:-100px;",
+195: "width:250px; margin-top:-100px;",
+197: "width:250px; margin-top:-100px;",
+202: "width:250px; margin-top:-100px;",
+204: "width:250px; margin-top:-100px;",
+205: "width:250px; margin-top:-100px;",
+207: "width:250px; margin-top:-100px;",
+210: "width:250px; margin-top:-100px;",
+212: "width:250px; margin-top:-100px;",
+216: "width:250px; margin-top:-100px;",
+217: "width:250px; margin-top:-100px;",
+218: "width:250px; margin-top:-100px;",
+10006: "width:250px; margin-top:-100px;",
+10011: "width:250px; margin-top:-100px;",
+10013: "width:250px; margin-top:-100px;",
+10015: "width:250px; margin-top:-100px;"
 
 };
 
@@ -633,7 +768,71 @@ const pageTextStyles = {
 156: "margin-top:50px;",
 157: "margin-top:0px;",
 158: "margin-top:0px;",
-159: "margin-top:50px;"
+159: "margin-top:50px;",
+165: "margin-top:50px;",
+166: "margin-top:0px;",
+167: "margin-top:0px;",
+168: "margin-top:0px;",
+169: "margin-top:0px;",
+170: "margin-top:50px;",
+171: "margin-top:50px;",
+172: "margin-top:50px;",
+173: "margin-top:0px;",
+174: "margin-top:0px;",
+175: "margin-top:0px;",
+176: "margin-top:50px;",
+177: "margin-top:0px;",
+178: "margin-top:0px;",
+179: "margin-top:0px;",
+180: "margin-top:0px;",
+181: "margin-top:0px;",
+182: "margin-top:50px;",
+183: "margin-top:0px;",
+184: "margin-top:50px;",
+185: "margin-top:0px;",
+186: "margin-top:0px;",
+187: "margin-top:50px;",
+188: "margin-top:50px;",
+189: "margin-top:0px;",
+190: "margin-top:0px;",
+191: "margin-top:50px;",
+192: "margin-top:0px;",
+193: "margin-top:0px;",
+194: "margin-top:50px;",
+195: "margin-top:50px;",
+196: "margin-top:0px;",
+197: "margin-top:50px;",
+198: "margin-top:0px;",
+199: "margin-top:0px;",
+200: "margin-top:0px;",
+201: "margin-top:0px;",
+202: "margin-top:50px;",
+203: "margin-top:0px;",
+204: "margin-top:50px;",
+205: "margin-top:50px;",
+206: "margin-top:0px;",
+207: "margin-top:50px;",
+208: "margin-top:0px;",
+209: "margin-top:0px;",
+210: "margin-top:50px;",
+211: "margin-top:0px;",
+212: "margin-top:50px;",
+213: "margin-top:0px;",
+214: "margin-top:0px;",
+215: "margin-top:0px;",
+216: "margin-top:50px;",
+217: "margin-top:50px;",
+218: "margin-top:50px;",
+10000: "margin-top:0px;",
+10001: "margin-top:0px;",
+10002: "margin-top:0px;",
+10003: "margin-top:0px;",
+10004: "margin-top:0px;",
+10005: "margin-top:0px;",
+10006: "margin-top:50px;",
+10011: "margin-top:50px;",
+10013: "margin-top:50px;",
+10015: "margin-top:50px;"
 
 
 
@@ -641,17 +840,17 @@ const pageTextStyles = {
 
 const pageCodes = {
   38: "576",
-77:"3546"
+77:"3546",
+218:"5065"
 };
 
 // 페이지별 선택지
 const pageChoices = {
-  10000: [
-  { text: "책장 조사", goto: 10000 },
-    { text: "가방 조사", goto: 10003 },
-    { text: "액자 조사", goto: 10005 },
-    { text: "금고 조사", goto: 10007 }
+  193: [
+  { text: '"저는 이곳에 있을게요. 다녀오세요."', goto: 10000 },
+    { text: '"죄송하지만, 혼자 나가시는건 위험해보여요."', goto: 194 },
   ]
+
 };
 
 const pageBGMs = {
@@ -659,7 +858,9 @@ const pageBGMs = {
   52: "./브금/bgm3.mp3",
 85: "./브금/bgm2.mp3",
 119: "./브금/무언가.mp3",
-127: "./브금/bgm4.mp3"
+127: "./브금/bgm4.mp3",
+210: "./브금/무언가.mp3",
+10006: "./브금/무언가.mp3"
 };
 
 // 페이지별 효과음
@@ -673,7 +874,7 @@ const pageSFX = {
 
 // 페이지별 영상
 const pageVideos = {
-  10000: "./영상.mp4"
+  100000: "./영상.mp4"
 };
 
 // 페이지별 영상 스타일
@@ -704,7 +905,11 @@ function showPage() {
   const backBtn = document.getElementById("backBtn");
   const saved = localStorage.getItem("currentPage");
 
-  if (currentPage === 0) backBtn.style.display = "none";
+const pageData = pages[currentPage];
+let pageText = typeof pageData === 'object' ? pageData.text : pageData;
+if (playerName) {
+  pageText = pageText.replace(/\[name\]/g, playerName);
+}  if (currentPage === 0) backBtn.style.display = "none";
   else backBtn.style.display = "block";
 
   if (currentPage === 0) {
@@ -714,26 +919,32 @@ function showPage() {
       ${saved && saved > 0 ? `<button id="continueBtn">이어하기</button>` : ""}
     `;
 
-    if (saved && saved > 0) {
-      document.getElementById("continueBtn").addEventListener("click", (e) => {
-        e.stopPropagation();
-        currentPage = parseInt(saved);
-        // 히스토리도 복원
-        const savedHistory = localStorage.getItem("pageHistory");
-        if (savedHistory) {
-          pageHistory = JSON.parse(savedHistory);
-        }
-        showPage();
-      });
+ if (saved && saved > 0) {
+  document.getElementById("continueBtn").addEventListener("click", (e) => {
+    e.stopPropagation();
+    currentPage = parseInt(saved);
+    // 히스토리도 복원
+    const savedHistory = localStorage.getItem("pageHistory");
+    if (savedHistory) {
+      pageHistory = JSON.parse(savedHistory);
     }
+    // 이름도 복원
+    const savedName = localStorage.getItem("playerName");  // ← 이 부분 추가
+    if (savedName) {  // ← 이 부분 추가
+      playerName = savedName;  // ← 이 부분 추가
+    }  // ← 이 부분 추가
+    showPage();
+  });
+}
     return;
   }
 
   // 페이지가 존재하지 않으면 에러 표시
-  if (!pages[currentPage]) {
+ if (!pageData) {
     card.innerHTML = `<p style="color:#ef4444;">페이지 ${currentPage}가 존재하지 않습니다.</p>`;
     return;
-  }
+}
+     
 
   if (currentPage >= pages.length) {
     card.innerHTML = "마지막 페이지입니다.";
@@ -752,59 +963,16 @@ function showPage() {
     sfx.src = pageSFX[currentPage];
     sfx.play().catch(() => {});
   }
-
-  // 선택지 페이지
-  if (pageChoices[currentPage]) {
-    let choicesHTML = '';
-    pageChoices[currentPage].forEach((choice, index) => {
-      choicesHTML += `<button class="choice-btn" data-goto="${choice.goto}">${choice.text}</button>`;
-    });
-
-    card.innerHTML = `
-      ${pageVideos[currentPage] ? `<video id="pageVideo" loop style="${pageVideoStyles[currentPage] || 'width:500px;'}"><source src="${pageVideos[currentPage]}" type="video/mp4"></video>` : ""}
-      ${pageImages[currentPage] ? `<img src="${pageImages[currentPage]}" style="${pageImageStyles[currentPage]}">` : ""}
-      <p style="${pageTextStyles[currentPage]}">${pages[currentPage]}</p>
-      <div style="margin-top: 1.5rem;">
-        ${choicesHTML}
-      </div>
-    `;
-
-    // 영상이 있으면 재생
-    if (pageVideos[currentPage]) {
-      const video = document.getElementById('pageVideo');
-      if (video) {
-        video.muted = !audioUnlocked;  // 잠금 해제 여부에 따라
-        video.play().catch(() => {
-          // 실패하면 음소거로 재생
-          video.muted = true;
-          video.play().catch(() => {});
-        });
-      }
-    }
-
-    // 선택지 버튼 이벤트
-    document.querySelectorAll('.choice-btn').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        pageHistory.push(currentPage);
-        currentPage = parseInt(btn.dataset.goto);
-        localStorage.setItem("currentPage", currentPage);
-        localStorage.setItem("pageHistory", JSON.stringify(pageHistory));
-        showPage();
-      });
-    });
-    return;
-  }
-
   if (pageCodes[currentPage]) {
     card.innerHTML = `
       ${pageVideos[currentPage] ? `<video id="pageVideo" loop style="${pageVideoStyles[currentPage] || 'width:500px;'}"><source src="${pageVideos[currentPage]}" type="video/mp4"></video>` : ""}
       ${pageImages[currentPage] ? `<img src="${pageImages[currentPage]}" style="${pageImageStyles[currentPage]}">` : ""}
-      <p style="${pageTextStyles[currentPage]}">${pages[currentPage]}</p>
+      <p style="${pageTextStyles[currentPage]}">${pageText}</p>
       <input type="text" id="codeInput" placeholder="코드입력"><br>
       <button id="submitBtn">확인</button>
       <p id="msg"></p>
     `;
+
 
     // 영상이 있으면 재생
     if (pageVideos[currentPage]) {
@@ -845,12 +1013,99 @@ function showPage() {
     });
 
     setTimeout(() => codeInput.focus(), 100);
+return;
+  } 
+  // 선택지 페이지
+  if (pageChoices[currentPage]) {
+    let choicesHTML = '';
+    pageChoices[currentPage].forEach((choice, index) => {
+      choicesHTML += `<button class="choice-btn" data-goto="${choice.goto}">${choice.text}</button>`;
+    });
 
-  } else {
     card.innerHTML = `
       ${pageVideos[currentPage] ? `<video id="pageVideo" loop style="${pageVideoStyles[currentPage] || 'width:500px;'}"><source src="${pageVideos[currentPage]}" type="video/mp4"></video>` : ""}
       ${pageImages[currentPage] ? `<img src="${pageImages[currentPage]}" style="${pageImageStyles[currentPage]}">` : ""}
-      <p style="${pageTextStyles[currentPage]}">${pages[currentPage]}</p>
+      <p style="${pageTextStyles[currentPage]}">${pageText}</p>
+      <div style="margin-top: 1.5rem;">
+        ${choicesHTML}
+      </div>
+    `;
+
+    // 영상이 있으면 재생
+    if (pageVideos[currentPage]) {
+      const video = document.getElementById('pageVideo');
+      if (video) {
+        video.muted = !audioUnlocked;  // 잠금 해제 여부에 따라
+        video.play().catch(() => {
+          // 실패하면 음소거로 재생
+          video.muted = true;
+          video.play().catch(() => {});
+        });
+      }
+    }
+
+    // 선택지 버튼 이벤트
+    document.querySelectorAll('.choice-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        pageHistory.push(currentPage);
+        currentPage = parseInt(btn.dataset.goto);
+        localStorage.setItem("currentPage", currentPage);
+        localStorage.setItem("pageHistory", JSON.stringify(pageHistory));
+        showPage();
+      });
+    });
+    return;
+  }
+
+
+// 이름 입력 페이지
+  if (currentPage === 158) {
+    card.innerHTML = `
+      ${pageImages[currentPage] ? `<img src="${pageImages[currentPage]}" style="${pageImageStyles[currentPage]}">` : ""}
+      <p style="${pageTextStyles[currentPage]}">${pageText}</p>
+      <input type="text" id="nameInput" placeholder="이름 입력" maxlength="10"><br>
+      <button id="nameSubmitBtn">확인</button>
+    `;
+
+    const nameInput = document.getElementById('nameInput');
+    const nameSubmitBtn = document.getElementById('nameSubmitBtn');
+
+    const submitName = (e) => {
+      e.stopPropagation();
+      const name = nameInput.value.trim();
+      if (name) {
+        playerName = name;
+        localStorage.setItem("playerName", name);
+        pageHistory.push(currentPage);
+        currentPage++;
+        localStorage.setItem("currentPage", currentPage);
+        localStorage.setItem("pageHistory", JSON.stringify(pageHistory));
+        showPage();
+      } else {
+        alert("이름을 입력해주세요!");
+        nameInput.focus();
+      }
+    };
+
+    nameSubmitBtn.addEventListener('click', submitName);
+    
+    nameInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        submitName(e);
+      }
+    });
+
+    setTimeout(() => nameInput.focus(), 100);
+    return;
+  }
+
+
+else {
+    card.innerHTML = `
+      ${pageVideos[currentPage] ? `<video id="pageVideo" loop style="${pageVideoStyles[currentPage] || 'width:500px;'}"><source src="${pageVideos[currentPage]}" type="video/mp4"></video>` : ""}
+      ${pageImages[currentPage] ? `<img src="${pageImages[currentPage]}" style="${pageImageStyles[currentPage]}">` : ""}
+      <p style="${pageTextStyles[currentPage]}">${pageText}</p>
     `;
 
     // 영상이 있으면 재생
@@ -866,33 +1121,43 @@ function showPage() {
     }
   }
 }
-
 wrap.addEventListener('click', () => {
-  // 선택지나 코드 입력 페이지에서는 클릭 무시
-  if (pageCodes[currentPage] || pageChoices[currentPage]) return;
+ if (pageCodes[currentPage] || pageChoices[currentPage] || currentPage === 158) return;
 
   if (currentPage === 0) {
     const saved = localStorage.getItem("currentPage");
-
     if (saved && saved > 0) {
       showConfirmPopup();
       return;
     }
-
     audio.play().catch(() => {});
-    audioUnlocked = true;  // 오디오 잠금 해제
+    audioUnlocked = true;
     currentPage = 1;
     localStorage.setItem("currentPage", currentPage);
     showPage();
     return;
   }
 
-  if (pages[currentPage + 1]) {
-    currentPage++;
-    // 일반 진행은 히스토리 초기화 (선택지 아닌 경우)
-    pageHistory = [];
+  const pageData = pages[currentPage];
+  
+  // goto 객체인 경우
+  if (typeof pageData === 'object' && pageData.goto) {
+    pageHistory.push(currentPage);
+    currentPage = pageData.goto;
     localStorage.setItem("currentPage", currentPage);
     localStorage.setItem("pageHistory", JSON.stringify(pageHistory));
+    showPage();
+    return;
+  }
+
+
+
+  // 일반 페이지인 경우
+  if (pages[currentPage + 1]) {
+    pageHistory.push(currentPage);  // ← 이 줄 추가!
+    currentPage++;
+    localStorage.setItem("currentPage", currentPage);
+    localStorage.setItem("pageHistory", JSON.stringify(pageHistory));  // ← 이 줄 추가!
     showPage();
   }
 });
@@ -926,14 +1191,27 @@ document.addEventListener("keydown", (e) => {
       localStorage.setItem("currentPage", currentPage);
       showPage();
     }
-  } else if (e.key === "ArrowRight" && pages[currentPage + 1] && !pageCodes[currentPage] && !pageChoices[currentPage]) {
-    currentPage++;
-    localStorage.setItem("currentPage", currentPage);
-    showPage();
+} else if (e.key === "ArrowRight" && !pageCodes[currentPage] && !pageChoices[currentPage] && currentPage !== 158) {    const pageData = pages[currentPage];
+    
+    if (typeof pageData === 'object' && pageData.goto) {
+      pageHistory.push(currentPage);
+      currentPage = pageData.goto;
+      localStorage.setItem("currentPage", currentPage);
+      localStorage.setItem("pageHistory", JSON.stringify(pageHistory));
+      showPage();
+    } else if (pages[currentPage + 1]) {
+      pageHistory.push(currentPage);  // ← 이 줄 추가!
+      currentPage++;
+      localStorage.setItem("currentPage", currentPage);
+      localStorage.setItem("pageHistory", JSON.stringify(pageHistory));  // ← 이 줄 추가!
+      showPage();
+    }
   }
-});
+});  // <- 여기서 keydown 이벤트 리스너가 끝남
 
-showPage();
+showPage();  // <- 이 줄이 이벤트 리스너 밖에 있어야 함
 </script>
 </body>
 </html>
+
+
